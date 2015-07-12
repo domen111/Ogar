@@ -41,10 +41,14 @@ The current available console commands are listed here. Command names are not ca
 
  - Addbot [Number]
    * Adds [Number] of bots to the server. If an amount is not specified, 1 bot will be added.
+ - Removebot [Number]
+   * Randomly remove [Number] of bots from the server. If an amount is not specified, it will remove 1 bot.
  - Ban [IP]
    * Prevents anyone with the banned IP from joining.
  - Banlist {clear}
    * Shows a list of currently banned IPs. You can clear the banlist by typing "clear" as the 2nd parameter.
+ - Disconnect [Player ID]
+   * Remove the WebSocket connection of the player. It can be used to remove specific bot player.
  - Board [String 1] [String 2] [String 3] ...
    * Replaces the text on the leaderboard with the string text.
  - Boardreset

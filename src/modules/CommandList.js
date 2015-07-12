@@ -29,13 +29,36 @@ Commands.list = {
     addbot: function(gameServer,split) {
         var add = parseInt(split[1]);
         if (isNaN(add)) {
-            add = 1; // Adds 1 bot if user doesnt specify a number
+            add = 1; // Adds 1 bot if user doesn't specify a number
         }
 
         for (var i = 0; i < add; i++) {
             gameServer.bots.addBot();
         }
         console.log("[Console] Added "+add+" player bots");
+    },
+    removebot: function(gameServer,split) {
+        var remove = parseInt(split[1]);
+        if (isNaN(remove)) {
+            remove = 1; // Removes 1 bot if user doesn't specify a number
+        }
+        
+        var bots = [];
+        for (var i in gameServer.clients) {
+            if (gameServer.clients[i].constructor.name == "FakeSocket") {
+                bots.push(gameServer.clients[i]);
+            }
+        }
+        for (var i = 0; i < remove; i++) {
+            if (bots.length == 0) {
+                console.log("[Console] Removed all "+i+" player bots");
+                return;
+            }
+            var index = Math.floor(Math.random()*bots.length);
+            bots[index].close();
+            bots.splice(index,1);
+        }
+        console.log("[Console] Removed "+remove+" player bots");
     },
     ban: function(gameServer,split) {
         var ip = split[1]; // Get ip
@@ -70,6 +93,21 @@ Commands.list = {
         for (var i in gameServer.banned) {
             console.log(gameServer.banned[i]);
         }
+    },
+    disconnect: function(gameServer,split) {
+        var id = split[1];
+        var removed = false;
+        for (var i in gameServer.clients) {
+            if (gameServer.clients[i].playerTracker.pID == id) {
+                gameServer.clients[i].close();
+                removed = true;
+                break;
+            }
+        }
+        if(removed)
+            console.log("[Console] Disconnected player, id = "+id);
+        else
+            console.log("[Console] Player not found, id = "+id);
     },
     board: function(gameServer,split) {
         var newLB = [];
